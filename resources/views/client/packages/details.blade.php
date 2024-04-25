@@ -91,46 +91,54 @@
           <div>
   
             <div>
-                <form action="{{ route('packages.book') }}" enctype="multipart/form-data" method="post"
-                class="needs-validation form-frame" novalidate onkeydown="return event.key !== 'Enter';">
-                @csrf
-                <div class="row">
-                  <div class="col-md-6 form-group">
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+              <form action="{{ route('packages.book') }}" enctype="multipart/form-data" method="post" class="needs-validation form-frame" novalidate>
+                  @csrf
+                  <div class="row">
+                      <div class="col-md-6 form-group">
+                          <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                          <div class="invalid-feedback">Please enter your name.</div>
+                      </div>
+                      <div class="col-md-6 form-group mt-3 mt-md-0">
+                          <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                          <div class="invalid-feedback">Please enter a valid email address.</div>
+                      </div>
                   </div>
-                  <div class="col-md-6 form-group mt-3 mt-md-0">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                  <div class="row mt-3">
+                      <div class="col-md-6 form-group">
+                          <input type="number" name="number_of_people" class="form-control" placeholder="Number of People" required>
+                          <div class="invalid-feedback">Please enter the number of people.</div>
+                      </div>
+                      <div class="col-md-6 form-group mt-3 mt-md-0">
+                          <input type="date" name="date" class="form-control" required>
+                          <div class="invalid-feedback">Please select a date.</div>
+                      </div>
                   </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6 form-group">
-                      <input type="number" name="number_of_people" class="form-control"  placeholder="Number of People" required>
-                    </div>
-                    <div class="col-md-6 form-group mt-3 mt-md-0">
-                        <input type="date" name="date" class="form-control"  required>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6 form-group">
-                      <input type="number" name="phone_number" class="form-control"  placeholder="Phone Number. Ex: 62xxxxxx" required>
-                    </div>
-                    <div class="col-md-6 form-group mt-3 mt-md-0">
-                        <input type="hidden" name="package_id" value="{{ $package->id }}">
-                        <input type="text" name="package" class="form-control" value="{{ $package->package_name }} - Rp{{ $package->price }}" readonly>
-                    </div>
-                </div>
-                <div class="form-group mt-3">
-                  <label class="mb-2" for="address">Pickup Address</label>
-                  <input type="text" class="form-control" name="address" id="address" placeholder="Your Pickup Address" required>
-              </div>
-                <div class="form-group mt-3">
-                    <label class="mb-2" for="image">Upload Your Payment Here</label>
-                    <input type="file" class="form-control" name="image" id="image" required>
-                </div>
-                
-                <div class="text-center mt-3"><button type="submit">Book</button></div>
+                  <div class="row mt-3">
+                      <div class="col-md-6 form-group">
+                          <input type="number" name="phone_number" class="form-control" placeholder="Phone Number. Ex: 62xxxxxx" required>
+                          <div class="invalid-feedback">Please enter your phone number.</div>
+                      </div>
+                      <div class="col-md-6 form-group mt-3 mt-md-0">
+                          <input type="hidden" name="package_id" value="{{ $package->id }}" required>
+                          <input type="text" name="package" class="form-control" value="{{ $package->package_name }} - Rp{{ $package->price }}" readonly required>
+                      </div>
+                  </div>
+                  <div class="form-group mt-3">
+                      <label class="mb-2" for="address">Pickup Address</label>
+                      <input type="text" class="form-control" name="address" id="address" placeholder="Your Pickup Address" required>
+                      <div class="invalid-feedback">Please enter your pickup address.</div>
+                  </div>
+                  <div class="form-group mt-3">
+                      <label class="mb-2" for="image">Upload Your Payment Here</label>
+                      <input type="file" class="form-control" name="image" id="image" required>
+                      <div class="invalid-feedback">Please upload your payment image.</div>
+                  </div>
+          
+                  <div class="text-center mt-3">
+                      <button type="submit" id="submitBtn">Book</button>
+                  </div>
               </form>
-            </div>
+          </div>
   
           </div>
   
@@ -175,6 +183,17 @@
         // Update the price input value
         priceInput.value = "{{ $package->package_name }} - Rp" + newPrice;
     });
+</script>
+<script>
+  // Disable form submission if there are invalid fields
+  document.getElementById('submitBtn').addEventListener('click', function(event) {
+      var form = document.getElementsByClassName('needs-validation')[0];
+      if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+  });
 </script>
 </body>
 
